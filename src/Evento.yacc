@@ -1,0 +1,6 @@
+%{
+    #include "Evento.hpp"
+%}
+
+%%
+syntax:

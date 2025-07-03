@@ -6,7 +6,6 @@ let HFILE (name: string) : string =
 
 let hpp: unit = //
     let H = HFILE APP
-
     File.WriteAllText(
         $"inc/{APP}.hpp",
         $"""#ifndef {H}
@@ -15,6 +14,10 @@ let hpp: unit = //
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+
+extern int  yylex();
+extern int  yyparse();
+extern void yyerror(char *msg);
 
 #endif  // _EVENTO_H_
 """
@@ -35,6 +38,12 @@ int main(int argc, char *argv[]) {  //
 }
 """)
 
-let lex: unit = File.WriteAllText($"src/{APP}.lex", "")
+let lex: unit = //
+    let H = $"#include \"{APP}.hpp\""
+    File.WriteAllText($"src/{APP}.lex", 
+    "%{\n    "+H+"\n%}\n\n%option noyywrap yylineno\n\n%%\n" )
 
-let yacc: unit = File.WriteAllText($"src/{APP}.yacc", "")
+let yacc: unit = //
+    let H = $"#include \"{APP}.hpp\""
+    File.WriteAllText($"src/{APP}.yacc", 
+    "%{\n    "+H+"\n%}\n\n%%\nsyntax:\n" )
