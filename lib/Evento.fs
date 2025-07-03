@@ -341,5 +341,6 @@ let project: unit =
     dirs
     files
     fs
+    cross
 
 COMMIT
