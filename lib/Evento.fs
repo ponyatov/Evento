@@ -152,9 +152,10 @@ let files: unit =
     mk
     cmake
 
-let fs: unit =
+let fsharp: unit =
     touch $"lib/{APP}.fs"
     touch $"lib/VSCode.fs"
+    touch $"lib/Format.fs"
     touch $"lib/Make.fs"
     touch $"lib/CMake.fs"
     touch $"{APP}.fsproj"
@@ -162,7 +163,7 @@ let fs: unit =
 let project: unit =
     dirs
     files
-    fs
+    fsharp
     cross
 
 COMMIT
