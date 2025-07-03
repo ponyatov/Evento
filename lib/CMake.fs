@@ -77,6 +77,71 @@ let CMakePresets: unit = //
 """
     )
 
+let src: unit = //
+    File.WriteAllText(
+        "cmake/src.cmake",
+        """# scan project for source code files
+
+file(GLOB LD
+    RELATIVE ${CMAKE_SOURCE_DIR}
+    hw/${HW}/*.ld
+)
+
+file(GLOB S
+    RELATIVE ${CMAKE_SOURCE_DIR}
+    hw/${HW}/*.s
+)
+
+file(GLOB C
+    RELATIVE ${CMAKE_SOURCE_DIR}
+    src/*.c*
+    # cross
+      hw/src/*.c*   hw/${HW}/src/*.c*
+     cpu/src/*.c*  cpu/${CPU}/src/*.c*
+    arch/src/*.c* arch/${ARCH}/src/*.c*
+      os/src/*.c*   os/${OS}/src/*.c*
+)
+
+file(GLOB H
+    RELATIVE ${CMAKE_SOURCE_DIR}
+    inc/*.h*
+    # cross
+      hw/inc/*.h*   hw/${HW}/inc/*.h*
+     cpu/inc/*.h*  cpu/${CPU}/inc/*.h*
+    arch/inc/*.h* arch/${ARCH}/inc/*.h*
+      os/inc/*.h*   os/${OS}/inc/*.h*
+)
+
+file(GLOB INC
+    RELATIVE ${CMAKE_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}
+    inc
+    # cross
+      hw/inc   hw/${HW}/inc
+     cpu/inc  cpu/${CPU}/inc
+    arch/inc arch/${ARCH}/inc
+      os/inc   os/${OS}/inc
+)
+include_directories(${INC})
+"""
+    )
+
+let x86_64_linux_gnu: unit = //
+    File.WriteAllText(
+        "cmake/x86_64-linux-gnu.cmake",
+        """set(CMAKE_SYSTEM_NAME       Linux)
+set(CMAKE_SYSTEM_PROCESSOR  x86_64)
+set(TOOLCHAIN_PREFIX        ${ARCH}-${OS}-gnu)
+set(CMAKE_EXECUTABLE_SUFFIX "")
+
+include(any_toolchain)
+
+add_compile_definitions()
+add_compile_options()
+add_link_options()
+"""
+    )
+
 let cmake: unit = //
     mkdir "cmake"
     CMakeLists
@@ -99,3 +164,6 @@ let cmake: unit = //
           "cross"
           "install" ] do
         File.WriteAllText($"cmake/{cm}.cmake", "")
+
+    src
+    x86_64_linux_gnu
