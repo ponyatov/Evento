@@ -1,5 +1,7 @@
 let pc: unit = //
     mkdir "hw/pc"
+    touch "hw/pc/pc.mk"
+    touch "hw/pc/pc.cmake"
     mkdir "hw/pc/inc"
     mkdir "hw/pc/src"
     touch "hw/pc/inc/pc.hpp"
@@ -7,6 +9,8 @@ let pc: unit = //
 
 let f429disco: unit = //
     mkdir "hw/f429disco"
+    touch "hw/f429disco/f429disco.mk"
+    touch "hw/f429disco/f429disco.cmake"
     mkdir "hw/f429disco/inc"
     mkdir "hw/f429disco/src"
     touch "hw/f429disco/inc/f429disco.hpp"
@@ -14,6 +18,8 @@ let f429disco: unit = //
 
 let pillf103: unit = //
     mkdir "hw/pillf103"
+    touch "hw/pillf103/pillf103.mk"
+    touch "hw/pillf103/pillf103.cmake"
     mkdir "hw/pillf103/inc"
     mkdir "hw/pillf103/src"
     touch "hw/pillf103/inc/pillf103.hpp"
