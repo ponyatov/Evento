@@ -1,8 +1,5 @@
 //! generic embedded project generation script in F#
 
-open System
-open System.IO
-
 // project metainfo
 let APP = "Evento"
 let TITLE = "Embedded Programming Language Prototype"
@@ -22,6 +19,17 @@ let EMAIL = "dponyatov@gmail.com"
 let YEAR = 2025
 let LICENSE = "MIT"
 let GITHUB = $"https://github.com/ponyatov/{APP}"
+
+// file generation
+open System
+open System.IO
+
+let mkdir (path:string): unit =
+    if not (Directory.Exists(path)) then
+        Directory.CreateDirectory(path) |> ignore
+    let giti = Path.Combine(path, ".gitignore")
+    if not (File.Exists(giti)) then
+        File.WriteAllText(giti,"!.gitignore\n")
 
 // env
 let USER = Environment.UserName
@@ -185,8 +193,7 @@ let settings:unit =
 """)
 
 let vscode:unit = 
-    Directory.CreateDirectory(".vscode") |> ignore
-    File.WriteAllText(".vscode/.gitignore","!.gitignore\n")
+    mkdir ".vscode"
     c_cpp_properties
     extensions
     tasks
@@ -194,21 +201,19 @@ let vscode:unit =
     settings
 
 let bin:unit = 
-    Directory.CreateDirectory("bin") |> ignore
+    mkdir "bin"
     File.WriteAllText("bin/.gitignore","*\n!.gitignore\n")
 
 let doc:unit = 
-    Directory.CreateDirectory("doc") |> ignore
+    mkdir "doc"
     File.WriteAllText("doc/.gitignore","html/\n!.gitignore\n")
 
 let lib:unit = 
-    Directory.CreateDirectory("lib") |> ignore
-    File.WriteAllText("lib/.gitignore","!.gitignore\n")
+    mkdir "lib"
     File.WriteAllText($"lib/{APP}.ini","# line comment\n")
 
 let inc:unit = 
-    Directory.CreateDirectory("inc") |> ignore
-    File.WriteAllText("inc/.gitignore","!.gitignore\n")
+    mkdir "inc"
 
 let hpp:unit =
     File.WriteAllText($"inc/{APP}.hpp","")
