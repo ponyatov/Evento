@@ -35,7 +35,47 @@ include(clean)          # project clean-up (remove generated & temp files)
     )
 
 let CMakePresets: unit = //
-    File.WriteAllText("CMakePresets.json", "")
+    File.WriteAllText(
+        "CMakePresets.json",
+        """{
+    "version": 6,
+    "buildPresets": [
+        {
+            "name"            :  "linux",
+            "configurePreset" :  "linux",
+            "targets"         : ["all","install"]
+        }
+    ],
+    "configurePresets": [
+        {
+            "name"            : "common",
+            "hidden"          :  true,
+            "binaryDir"       : "${sourceDir}/tmp/${presetName}",
+            "generator"       : "Unix Makefiles",
+            "cacheVariables"  : {
+                "CMAKE_INSTALL_PREFIX"    : "${sourceDir}/bin",
+                "CMAKE_MODULE_PATH"       : "${sourceDir}/cmake",
+                "CMAKE_COLOR_DIAGNOSTICS" :  false,
+                "CMAKE_BUILD_TYPE"        : "Debug",
+                "CMAKE_VERBOSE_MAKEFILE"  :  false
+            }
+        },
+        {
+            "name"            : "pc",
+            "inherits"        : "common",
+            "hidden"          :  true,
+            "cacheVariables"  : {"HW":"pc", "CPU":"i5", "ARCH":"x86_64"}
+        },
+        {
+            "name"            : "linux",
+            "inherits"        : "pc",
+            "toolchainFile"   : "${sourceDir}/cmake/x86_64-linux-gnu.cmake",
+            "cacheVariables"  : {"OS":"linux"}
+        }
+    ]
+}
+"""
+    )
 
 let cmake: unit = //
     mkdir "cmake"
