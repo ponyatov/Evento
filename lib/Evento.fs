@@ -118,30 +118,6 @@ let giti: unit =
 
 let apt: unit = File.WriteAllText("apt.Debian", "")
 
-let makefile: unit = File.WriteAllText("Makefile")
-
-let mk: unit =
-    Directory.CreateDirectory("mk") |> ignore
-    File.WriteAllText("mk/.gitignore", "!.gitignore\n")
-    let mk = ""
-
-    for mk in
-        [ "var"
-          "version"
-          "dir"
-          "tool"
-          "src"
-          "cfg"
-          "all"
-          "format"
-          "rule"
-          "doc"
-          "install"
-          "merge" ] do
-        File.WriteAllText($"mk/{mk}.mk", "")
-
-    File.WriteAllText($"Makefile", mk)
-
 let doxygen: unit = File.WriteAllText(".doxygen", "")
 
 let files: unit =
