@@ -321,10 +321,6 @@ let mk: unit =
 
     File.WriteAllText($"Makefile", mk)
 
-let cmake: unit =
-    Directory.CreateDirectory("cmake") |> ignore
-    File.WriteAllText("mk/.gitignore", "!.gitignore\n")
-
 let files: unit =
     giti
     cf

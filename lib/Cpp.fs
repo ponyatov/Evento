@@ -4,7 +4,7 @@ let HFILE (name: string) : string =
     let upper = name.ToUpper()
     $"_{upper}_H_"
 
-let hpp: unit =
+let hpp: unit = //
     let H = HFILE APP
 
     File.WriteAllText(
