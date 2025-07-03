@@ -1,7 +1,27 @@
+let pc: unit = //
+    mkdir "hw/pc"
+    mkdir "hw/pc/inc"
+    mkdir "hw/pc/src"
+    touch "hw/pc/inc/pc.hpp"
+    touch "hw/pc/src/pc.cpp"
+
+let f429disco: unit = //
+    mkdir "hw/f429disco"
+    mkdir "hw/f429disco/inc"
+    mkdir "hw/f429disco/src"
+
+let pillf103: unit = //
+    mkdir "hw/pillf103"
+    mkdir "hw/pillf103/inc"
+    mkdir "hw/pillf103/src"
+
 let hw: unit = //
     mkdir "hw"
     mkdir "hw/inc"
     mkdir "hw/src"
+    pc
+    f429disco
+    pillf103
 
 let cpu: unit = //
     mkdir "cpu"

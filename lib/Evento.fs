@@ -24,6 +24,10 @@ let GITHUB = $"https://github.com/ponyatov/{APP}"
 open System
 open System.IO
 
+let touch (path: string) : unit =
+    if not (File.Exists(path)) then
+        File.WriteAllText(path, "")
+
 let mkdir (path: string) : unit =
     if not (Directory.Exists(path)) then
         Directory.CreateDirectory(path) |> ignore
