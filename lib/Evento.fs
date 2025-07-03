@@ -69,7 +69,30 @@ let GITGUI = $"git gui &"
 let CODE = $"excode {HOME}/{APP}"
 
 let c_cpp_properties: unit =
-    File.WriteAllText(".vscode/c_cpp_properties.json", "{\n}\n")
+    File.WriteAllText(".vscode/c_cpp_properties.json", """{
+    "version": 4,
+    "env":{
+        "appInclude": [
+            "${workspaceFolder}/inc/**",
+            "${workspaceFolder}/tmp/**",
+            "${workspaceFolder}/src/**"
+        ]
+    },
+    "configurations": [
+        {
+            "name"                 : "cmake",
+            "configurationProvider": "ms-vscode.cmake-tools",
+            "mergeConfigurations"  :  true,
+            "includePath": [
+                "${appInclude}"
+            ],
+            "defines": [
+                "PC", "I5", "X86_64", "LINUX"
+            ]
+        }
+    ]
+}
+""")
 
 let extensions: unit = File.WriteAllText(".vscode/extensions.json", "{\n}\n")
 
