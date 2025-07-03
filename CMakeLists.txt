@@ -1,9 +1,4 @@
-module CMake
-
-let CMakeLists: unit = //
-    File.WriteAllText(
-        "CMakeLists.txt",
-        """cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.22)
 get_filename_component(CMAKE_PROJECT_NAME ${CMAKE_SOURCE_DIR} NAME_WE)
 project(${CMAKE_PROJECT_NAME} LANGUAGES C CXX ASM)
 
@@ -31,31 +26,3 @@ add_executable(${CMAKE_PROJECT_NAME}
 include(install)        # target install
 include(cross)          # cross compiler binaries: elf/dfu
 include(clean)          # project clean-up (remove generated & temp files)
-"""
-    )
-
-let CMakePresets: unit = //
-    File.WriteAllText("CMakePresets.json", "")
-
-let cmake: unit = //
-    mkdir "cmake"
-    CMakeLists
-    CMakePresets
-
-    for cm in
-        [ "any_toolchain"
-          "x86_64-linux-gnu"
-          "aarch64-linux-gnu"
-          "arm-none-eabi"
-          "xtensa-lx106-elf"
-          "i686-w64-mingw32"
-          "syntax"
-          "FindLEMON"
-          "FindReadline"
-          "FindRAGEL"
-          "clean"
-          "src"
-          "version"
-          "cross"
-          "install" ] do
-        File.WriteAllText($"cmake/{cm}.cmake", "")
