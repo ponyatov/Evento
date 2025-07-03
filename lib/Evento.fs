@@ -24,12 +24,14 @@ let GITHUB = $"https://github.com/ponyatov/{APP}"
 open System
 open System.IO
 
-let mkdir (path:string): unit =
+let mkdir (path: string) : unit =
     if not (Directory.Exists(path)) then
         Directory.CreateDirectory(path) |> ignore
+
     let giti = Path.Combine(path, ".gitignore")
+
     if not (File.Exists(giti)) then
-        File.WriteAllText(giti,"!.gitignore\n")
+        File.WriteAllText(giti, "!.gitignore\n")
 
 // env
 let USER = Environment.UserName
@@ -66,20 +68,19 @@ let PUSH = $"git push -uv gh {USER}"
 let GITGUI = $"git gui &"
 let CODE = $"excode {HOME}/{APP}"
 
-let c_cpp_properties:unit =
-    File.WriteAllText(".vscode/c_cpp_properties.json","{\n}\n")
+let c_cpp_properties: unit =
+    File.WriteAllText(".vscode/c_cpp_properties.json", "{\n}\n")
 
-let extensions:unit =
-    File.WriteAllText(".vscode/extensions.json","{\n}\n")
+let extensions: unit = File.WriteAllText(".vscode/extensions.json", "{\n}\n")
 
-let tasks:unit =
-    File.WriteAllText(".vscode/tasks.json","{\n}\n")
+let tasks: unit = File.WriteAllText(".vscode/tasks.json", "{\n}\n")
 
-let launch:unit =
-    File.WriteAllText(".vscode/launch.json","{\n}\n")
+let launch: unit = File.WriteAllText(".vscode/launch.json", "{\n}\n")
 
-let settings:unit =
-    File.WriteAllText(".vscode/settings.json","""{
+let settings: unit =
+    File.WriteAllText(
+        ".vscode/settings.json",
+        """{
     // files
     "C_Cpp.files.exclude": {
         "ref":true,
@@ -190,9 +191,10 @@ let settings:unit =
           "CHERE_INVOKING": "1",
         }}},
 }
-""")
+"""
+    )
 
-let vscode:unit = 
+let vscode: unit =
     mkdir ".vscode"
     c_cpp_properties
     extensions
@@ -200,48 +202,59 @@ let vscode:unit =
     launch
     settings
 
-let bin:unit = 
+let bin: unit =
     mkdir "bin"
-    File.WriteAllText("bin/.gitignore","*\n!.gitignore\n")
+    File.WriteAllText("bin/.gitignore", "*\n!.gitignore\n")
 
-let doc:unit = 
+let doc: unit =
     mkdir "doc"
-    File.WriteAllText("doc/.gitignore","html/\n!.gitignore\n")
+    File.WriteAllText("doc/.gitignore", "html/\n!.gitignore\n")
 
-let lib:unit = 
+let lib: unit =
     mkdir "lib"
-    File.WriteAllText($"lib/{APP}.ini","# line comment\n")
+    File.WriteAllText($"lib/{APP}.ini", "# line comment\n")
 
-let inc:unit = 
-    mkdir "inc"
+let inc: unit = mkdir "inc"
 
-let hpp:unit =
-    File.WriteAllText($"inc/{APP}.hpp","")
-let cpp:unit =
-    File.WriteAllText($"src/{APP}.cpp","")
-let lex:unit =
-    File.WriteAllText($"src/{APP}.lex","")
-let yacc:unit =
-    File.WriteAllText($"src/{APP}.yacc","")
+let HFILE (name: string) : string =
+    let upper = name.ToUpper()
+    $"_{upper}_H_"
 
-let src:unit = 
+let hpp: unit =
+    let H = HFILE APP
+
+    File.WriteAllText(
+        $"inc/{APP}.hpp",
+        $"""#ifndef {H}
+#define {H}
+#endif  // _EVENTO_H_
+"""
+    )
+
+let cpp: unit = File.WriteAllText($"src/{APP}.cpp", "")
+
+let lex: unit = File.WriteAllText($"src/{APP}.lex", "")
+
+let yacc: unit = File.WriteAllText($"src/{APP}.yacc", "")
+
+let src: unit =
     Directory.CreateDirectory("src") |> ignore
-    File.WriteAllText("src/.gitignore","!.gitignore\n")
+    File.WriteAllText("src/.gitignore", "!.gitignore\n")
     hpp
     cpp
     lex
     yacc
 
-let tmp:unit = 
+let tmp: unit =
     Directory.CreateDirectory("tmp") |> ignore
-    File.WriteAllText("tmp/.gitignore","*\n!.gitignore\n")
+    File.WriteAllText("tmp/.gitignore", "*\n!.gitignore\n")
 
-let ref:unit = 
+let ref: unit =
     Directory.CreateDirectory("ref") |> ignore
-    File.WriteAllText("ref/.gitignore","*\n!.gitignore\n")
+    File.WriteAllText("ref/.gitignore", "*\n!.gitignore\n")
 
 
-let dirs:unit =
+let dirs: unit =
     vscode
     bin
     doc
@@ -251,40 +264,63 @@ let dirs:unit =
     tmp
     ref
 
-let giti:unit =
-    File.WriteAllText(".gitignore","~\n*.swp\n*.log\n*.exe\n*.o\ntarget/\nobj/\n!.gitignore\n")
+let giti: unit =
+    File.WriteAllText(".gitignore", "~\n*.swp\n*.log\n*.exe\n*.o\ntarget/\nobj/\n!.gitignore\n")
 
-let cf:unit =
-    File.WriteAllText(".clang-format","")
+let cf: unit =
+    File.WriteAllText(
+        ".clang-format",
+        """BasedOnStyle: Google
+IndentWidth:  4
+TabWidth:     4
+UseTab:       Never
+ColumnLimit:  80
+UseCRLF:      false
 
-let prettier:unit =
-    File.WriteAllText(".prettierc","")
+SortIncludes: false
 
-let doxygen:unit =
-    File.WriteAllText(".doxygen","")
+AllowShortBlocksOnASingleLine: Always
+AllowShortFunctionsOnASingleLine: All
+"""
+    )
 
-let editorconfig:unit =
-    File.WriteAllText(".editorconfig","")
+let prettier: unit = File.WriteAllText(".prettierc", "")
 
-let apt:unit =
-    File.WriteAllText("apt.Debian","")
+let doxygen: unit = File.WriteAllText(".doxygen", "")
 
-let makefile:unit = 
-    File.WriteAllText("Makefile")
+let editorconfig: unit = File.WriteAllText(".editorconfig", "")
 
-let mk:unit =
+let apt: unit = File.WriteAllText("apt.Debian", "")
+
+let makefile: unit = File.WriteAllText("Makefile")
+
+let mk: unit =
     Directory.CreateDirectory("mk") |> ignore
-    File.WriteAllText("mk/.gitignore","!.gitignore\n")
+    File.WriteAllText("mk/.gitignore", "!.gitignore\n")
     let mk = ""
-    for mk in ["var";"version";"dir";"tool";"src";"cfg";"all";"format";"rule";"doc";"install";"merge"] do
-        File.WriteAllText($"mk/{mk}.mk","")
-    File.WriteAllText($"Makefile",mk)
 
-let cmake:unit =
+    for mk in
+        [ "var"
+          "version"
+          "dir"
+          "tool"
+          "src"
+          "cfg"
+          "all"
+          "format"
+          "rule"
+          "doc"
+          "install"
+          "merge" ] do
+        File.WriteAllText($"mk/{mk}.mk", "")
+
+    File.WriteAllText($"Makefile", mk)
+
+let cmake: unit =
     Directory.CreateDirectory("cmake") |> ignore
-    File.WriteAllText("mk/.gitignore","!.gitignore\n")
+    File.WriteAllText("mk/.gitignore", "!.gitignore\n")
 
-let files:unit =
+let files: unit =
     giti
     cf
     prettier
@@ -293,12 +329,12 @@ let files:unit =
     mk
     cmake
 
-let fs:unit =
-    File.WriteAllText($"lib/{APP}.fs","")
-    File.WriteAllText($"lib/VSCode.fs","")
-    File.WriteAllText($"lib/Make.fs","")
-    File.WriteAllText($"lib/CMake.fs","")
-    File.WriteAllText($"{APP}.fsproj","")
+let fs: unit =
+    File.WriteAllText($"lib/{APP}.fs", "")
+    File.WriteAllText($"lib/VSCode.fs", "")
+    File.WriteAllText($"lib/Make.fs", "")
+    File.WriteAllText($"lib/CMake.fs", "")
+    File.WriteAllText($"{APP}.fsproj", "")
 
 let project: unit =
     dirs
