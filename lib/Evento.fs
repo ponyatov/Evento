@@ -116,29 +116,6 @@ let dirs: unit =
 let giti: unit =
     File.WriteAllText(".gitignore", "~\n*.swp\n*.log\n*.exe\n*.o\ntarget/\nobj/\n!.gitignore\n")
 
-let cf: unit =
-    File.WriteAllText(
-        ".clang-format",
-        """BasedOnStyle: Google
-IndentWidth:  4
-TabWidth:     4
-UseTab:       Never
-ColumnLimit:  80
-UseCRLF:      false
-
-SortIncludes: false
-
-AllowShortBlocksOnASingleLine: Always
-AllowShortFunctionsOnASingleLine: All
-"""
-    )
-
-let prettier: unit = File.WriteAllText(".prettierc", "")
-
-let doxygen: unit = File.WriteAllText(".doxygen", "")
-
-let editorconfig: unit = File.WriteAllText(".editorconfig", "")
-
 let apt: unit = File.WriteAllText("apt.Debian", "")
 
 let makefile: unit = File.WriteAllText("Makefile")
@@ -165,11 +142,12 @@ let mk: unit =
 
     File.WriteAllText($"Makefile", mk)
 
+let doxygen: unit = File.WriteAllText(".doxygen", "")
+
 let files: unit =
     giti
-    cf
-    prettier
-    editorconfig
+    format
+    doxygen
     apt
     mk
     cmake
