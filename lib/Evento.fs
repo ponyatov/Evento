@@ -116,7 +116,22 @@ let dirs: unit =
 let giti: unit =
     File.WriteAllText(".gitignore", "~\n*.swp\n*.log\n*.exe\n*.o\ntarget/\nobj/\n!.gitignore\n")
 
-let apt: unit = File.WriteAllText("apt.Debian", "")
+let apt: unit = //
+    File.WriteAllText(
+        "apt.Debian",
+        """git make curl
+code meld doxygen clang-format
+g++ cmake gdb gdb-multiarch
+flex bison libreadline-dev ragel lemon
+python3 python3-venv python3-autopep8 python3-ply
+dotnet-runtime-9.0 dotnet-sdk-9.0
+qemu-system-arm
+    gcc-arm-none-eabi openocd newlib-source dfu-util stlink-tools
+    g++-aarch64-linux-gnu g++-arm-linux-gnueabihf
+qemu-system-x86
+    g++-mingw-w64-i686
+"""
+    )
 
 let doxygen: unit = File.WriteAllText(".doxygen", "")
 
