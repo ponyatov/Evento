@@ -43,10 +43,40 @@ let arch: unit = //
     mkdir "arch/inc"
     mkdir "arch/src"
 
+let none: unit = //
+    mkdir "os/none"
+    touch "os/none/none.mk"
+    touch "os/none/none.cmake"
+    mkdir "os/none/inc"
+    mkdir "os/none/src"
+    touch "os/none/inc/none.hpp"
+    touch "os/none/src/none.cpp"
+
+let freertos: unit = //
+    mkdir "os/freertos"
+    touch "os/freertos/freertos.mk"
+    touch "os/freertos/freertos.cmake"
+    mkdir "os/freertos/inc"
+    mkdir "os/freertos/src"
+    touch "os/freertos/inc/freertos.hpp"
+    touch "os/freertos/src/freertos.cpp"
+
+let linux: unit = //
+    mkdir "os/linux"
+    touch "os/linux/linux.mk"
+    touch "os/linux/linux.cmake"
+    mkdir "os/linux/inc"
+    mkdir "os/linux/src"
+    touch "os/linux/inc/linux.hpp"
+    touch "os/linux/src/linux.cpp"
+
 let os: unit = //
     mkdir "os"
     mkdir "os/inc"
     mkdir "os/src"
+    none
+    freertos
+    linux
 
 let cross: unit = //
     hw
