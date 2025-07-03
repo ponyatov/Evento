@@ -48,10 +48,20 @@ let cpu: unit = //
     mkdir "cpu/src"
     i5
 
+let x86_64: unit = //
+    mkdir "arch/x86_64"
+    touch "arch/x86_64/x86_64.mk"
+    touch "arch/x86_64/x86_64.cmake"
+    mkdir "arch/x86_64/inc"
+    mkdir "arch/x86_64/src"
+    touch "arch/x86_64/inc/x86_64.hpp"
+    touch "arch/x86_64/src/x86_64.cpp"
+
 let arch: unit = //
     mkdir "arch"
     mkdir "arch/inc"
     mkdir "arch/src"
+    x86_64
 
 let none: unit = //
     mkdir "os/none"
