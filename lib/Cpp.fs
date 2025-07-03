@@ -15,19 +15,24 @@ let hpp: unit = //
 #include <stdlib.h>
 #include <assert.h>
 
-extern int  yylex();
-extern int  yyparse();
-extern void yyerror(char *msg);
+extern int   yylex();
+extern char* yyfile;
+extern FILE* yyin;
+extern int   yylineno;
+extern char* yytext;
+extern int   yyparse();
+extern void  yyerror(char *msg);
 
 #endif  // _EVENTO_H_
 """
     )
 
 let cpp: unit =
-    File.WriteAllText($"src/{APP}.cpp", $"""#include "Evento.hpp"
+    File.WriteAllText($"src/{APP}.cpp",
+        $"#include \"{APP}.hpp\""+"""
 
 void arg(int argc, char *argv) {  //
-    fprintf(stderr, "arg[\%i] = <\%s>\n", argc, argv);
+    fprintf(stderr, "arg[%i] = <%s>\n", argc, argv);
 }
 
 int main(int argc, char *argv[]) {  //
@@ -41,9 +46,28 @@ int main(int argc, char *argv[]) {  //
 let lex: unit = //
     let H = $"#include \"{APP}.hpp\""
     File.WriteAllText($"src/{APP}.lex", 
-    "%{\n    "+H+"\n%}\n\n%option noyywrap yylineno\n\n%%\n" )
+    "%{\n    "+H+"""
+    char *yyfile = nullptr;
+%}
+
+%option noyywrap yylineno
+
+%%
+""" )
 
 let yacc: unit = //
     let H = $"#include \"{APP}.hpp\""
     File.WriteAllText($"src/{APP}.yacc", 
-    "%{\n    "+H+"\n%}\n\n%%\nsyntax:\n" )
+    "%{\n    "+H+"""
+%}
+
+%%
+syntax:
+
+%%
+void yyerror(char *msg) {
+    fprintf(stderr, "\n\n%s:%i %s [%s]\n\n",  //
+            yyfile, yylineno, msg, yytext);
+    exit(-1);
+}
+""" )
