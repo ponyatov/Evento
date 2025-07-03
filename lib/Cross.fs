@@ -33,10 +33,20 @@ let hw: unit = //
     f429disco
     pillf103
 
+let i5: unit = //
+    mkdir "cpu/i5"
+    touch "cpu/i5/i5.mk"
+    touch "cpu/i5/i5.cmake"
+    mkdir "cpu/i5/inc"
+    mkdir "cpu/i5/src"
+    touch "cpu/i5/inc/i5.hpp"
+    touch "cpu/i5/src/i5.cpp"
+
 let cpu: unit = //
     mkdir "cpu"
     mkdir "cpu/inc"
     mkdir "cpu/src"
+    i5
 
 let arch: unit = //
     mkdir "arch"
