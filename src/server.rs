@@ -29,6 +29,7 @@ fn error_404(client: &mut TcpStream, method: &[u8], url: &[u8]) {
     client.write(method).unwrap();
     client.write(b"\r\nurl: ").unwrap();
     client.write(url).unwrap();
+    client.flush().unwrap();
 }
 
 fn index(client: &mut TcpStream) {
@@ -36,6 +37,7 @@ fn index(client: &mut TcpStream) {
     client.write(&TEXT_HTML).unwrap();
     client.write(b"\r\n").unwrap();
     client.write(&INDEX_HTML).unwrap();
+    client.flush().unwrap();
 }
 
 fn logo(client: &mut TcpStream) {
@@ -43,6 +45,7 @@ fn logo(client: &mut TcpStream) {
     client.write(&IMAGE_PNG).unwrap();
     client.write(b"\r\n").unwrap();
     client.write(&LOGO_PNG).unwrap();
+    client.flush().unwrap();
 }
 
 fn css(client: &mut TcpStream) {
@@ -50,6 +53,7 @@ fn css(client: &mut TcpStream) {
     client.write(&TEXT_CSS).unwrap();
     client.write(b"\r\n").unwrap();
     client.write(&CSS_CSS).unwrap();
+    client.flush().unwrap();
 }
 
 fn js(client: &mut TcpStream) {
@@ -59,7 +63,7 @@ fn js(client: &mut TcpStream) {
     client.write(&JS_JS).unwrap();
 }
 
-fn router(mut client: TcpStream) {
+fn router(client: &mut TcpStream) {
     let mut buffer = [0; 1024];
     client.read(&mut buffer).unwrap();
 
@@ -69,13 +73,12 @@ fn router(mut client: TcpStream) {
     let (method, url) = (parts[0], parts[1]);
 
     match (method, url) {
-        (b"GET", b"/") | (b"GET", b"/index.html") => index(&mut client),
-        (b"GET", b"/favicon.ico") | (b"GET", b"/logo.png") => logo(&mut client),
-        (b"GET", b"/css.css") => css(&mut client),
-        (b"GET", b"/js.js") => js(&mut client),
-        _ => error_404(&mut client, method, url),
+        (b"GET", b"/") | (b"GET", b"/index.html") => index(client),
+        (b"GET", b"/favicon.ico") | (b"GET", b"/logo.png") => logo(client),
+        (b"GET", b"/css.css") => css(client),
+        (b"GET", b"/js.js") => js(client),
+        _ => error_404(client, method, url),
     }
-    client.flush().unwrap();
 }
 
 pub fn run() {
@@ -83,8 +86,8 @@ pub fn run() {
     eprintln!("server @ http://{}:{}", config::IP, config::PORT);
     for client in listener.incoming() {
         match client {
-            Ok(client) => {
-                thread::spawn(|| router(client));
+            Ok(mut client) => {
+                thread::spawn(move || router(&mut client));
             }
             Err(e) => {
                 eprintln!("Error: {}", e);
