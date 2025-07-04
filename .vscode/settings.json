@@ -1,2 +1,47 @@
 {
+    // files
+    "files.exclude": {
+        "doc/html": true, "**/node_modules/**": true,
+    },
+    "files.watcherExclude": {
+        "**/bin/**": true, "**/tmp/**": true,
+        "ref/**": true, "target/**": true, "obj/**": true,
+    },
+    "files.associations": {
+        "*.mk": "makefile", "*.make": "makefile",
+        "*.s": "arm", "*.s.fix": "arm", "*.S": "arm",
+        "*.ld": "linkerscript", "*.ld.fix": "linkerscript",
+        "*.ioc": "properties", "*.ocd": "properties",
+        "*.kernel": "properties", "*.config": "properties",
+        "*.service": "systemd-unit-file",
+        "requirements.*": "properties",
+        "*.ini": "properties", "*.f": "properties",
+    },
+
+    // editor
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.rulers": [80],
+    "editor.lineNumbers": "on",
+    "editor.formatOnSave":  false,
+    "workbench.tree.indent": 24,
+    "editor.fontSize": 14,
+    "explorer.autoReveal": false,
+    "terminal.integrated.copyOnSelection": true,
+    "git.enabled": false,
+
+    // Rust
+    "rust-analyzer.checkOnSave"          : false,
+    "rust-analyzer.check.allTargets"     : false,
+    "rust-analyzer.cargo.target"         : "x86_64-unknown-linux-gnu",
+    // "rust-analyzer.cargo.target"         : "thumbv7m-none-eabi",
+    // "rust-analyzer.cargo.target"         : "thumbv7em-none-eabihf",
+    // "rust-analyzer.cargo.target"         : "aarch64-unknown-linux-gnu",
+    // "rust-analyzer.cargo.target"         : "i686-pc-windows-gnu",
+    // "rust-analyzer.cargo.target"         : "wasm32-unknown-unknown",
+    "[rust]": { "editor.defaultFormatter": "rust-lang.rust-analyzer" },
 }
