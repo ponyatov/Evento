@@ -1,1 +1,1 @@
-CPU = stm32f429zit6
+CPU = stm32f429zi
