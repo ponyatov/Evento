@@ -17,6 +17,11 @@ const TEXT_CSS: &[u8] = b"Content-Type: text/css\r\n";
 const TEXT_JS: &[u8] = b"Content-Type: application/javascript\r\n";
 const IMAGE_PNG: &[u8] = b"Content-Type: image/png\r\n";
 
+// jigs
+const HTTP_KEEP_ALIVE: &[u8] = b"Connection: keep-alive\r\nKeep-Alive: timeout=5, max=1000\r\n";
+const HTTP_CACHE: &[u8] = b"Cache-Control: public, max-age=6\r\n"; // 1 hour cache
+// const HTTP_NOCACHE: &[u8] = b"Cache-Control: no-cache\r\n";
+
 // static content
 const INDEX_HTML: &[u8] = include_bytes!("../static/index.html");
 const LOGO_PNG: &[u8] = include_bytes!("../doc/logo.png");
@@ -29,13 +34,15 @@ fn error_404(client: &mut TcpStream, method: &[u8], url: &[u8]) {
     client.write(&TEXT_PLAIN).unwrap();
     client.write(b"\r\nmethod: ").unwrap();
     client.write(method).unwrap();
-    client.write(b"\r\nurl: ").unwrap();
+    // client.write(b"\r\nurl: ").unwrap();
     client.write(url).unwrap();
     client.flush().unwrap();
 }
 
 fn index(client: &mut TcpStream) {
     client.write(&HTTP_200_OK).unwrap();
+    client.write(&HTTP_KEEP_ALIVE).unwrap();
+    client.write(&HTTP_CACHE).unwrap();
     client.write(&TEXT_HTML).unwrap();
     client.write(b"\r\n").unwrap();
     client.write(&INDEX_HTML).unwrap();
@@ -44,6 +51,8 @@ fn index(client: &mut TcpStream) {
 
 fn logo(client: &mut TcpStream) {
     client.write(&HTTP_200_OK).unwrap();
+    client.write(&HTTP_KEEP_ALIVE).unwrap();
+    client.write(&HTTP_CACHE).unwrap();
     client.write(&IMAGE_PNG).unwrap();
     client.write(b"\r\n").unwrap();
     client.write(&LOGO_PNG).unwrap();
@@ -52,6 +61,8 @@ fn logo(client: &mut TcpStream) {
 
 fn css(client: &mut TcpStream) {
     client.write(&HTTP_200_OK).unwrap();
+    client.write(&HTTP_KEEP_ALIVE).unwrap();
+    client.write(&HTTP_CACHE).unwrap();
     client.write(&TEXT_CSS).unwrap();
     client.write(b"\r\n").unwrap();
     client.write(&CSS_CSS).unwrap();
@@ -60,6 +71,8 @@ fn css(client: &mut TcpStream) {
 
 fn js(client: &mut TcpStream) {
     client.write(&HTTP_200_OK).unwrap();
+    client.write(&HTTP_KEEP_ALIVE).unwrap();
+    client.write(&HTTP_CACHE).unwrap();
     client.write(&TEXT_JS).unwrap();
     client.write(b"\r\n").unwrap();
     client.write(&JS_JS).unwrap();
@@ -67,6 +80,8 @@ fn js(client: &mut TcpStream) {
 
 fn jquery(client: &mut TcpStream) {
     client.write(&HTTP_200_OK).unwrap();
+    client.write(&HTTP_KEEP_ALIVE).unwrap();
+    client.write(&HTTP_CACHE).unwrap();
     client.write(&TEXT_JS).unwrap();
     client.write(b"\r\n").unwrap();
     client.write(&JQUERY_MIN_JS).unwrap();
@@ -77,7 +92,6 @@ fn router(client: &mut TcpStream) {
     client.read(&mut buffer).unwrap();
 
     let request = buffer.split(|&x| x == b'\n').next().unwrap();
-    eprintln!("{:?}", &request);
     let parts: Vec<&[u8]> = request.split(|&x| x == b' ').collect();
     let (method, url) = (parts[0], parts[1]);
 

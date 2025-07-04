@@ -9,3 +9,6 @@ edition     =  "2024"
 
 [dependencies]
 const_format = "0.2"
+
+[target.'cfg(all(target_os = "linux"))'.dependencies]
+libc = "0.2"
