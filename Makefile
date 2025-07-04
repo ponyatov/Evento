@@ -9,5 +9,6 @@ include mk/rule.mk
 include mk/doc.mk
 include mk/rust.mk
 include mk/python.mk
+include mk/gz.mk
 include mk/install.mk
 include mk/ai.mk
